@@ -667,8 +667,24 @@ function handleEmail(e) {
   e.preventDefault();
   const msg = document.getElementById('email-msg');
   const input = document.getElementById('email-input');
-  msg.classList.add('show');
-  input.value = '';
+  const btn = e.target.querySelector('button');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  fetch('https://submit-form.com/6JgR4NH7e', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: input.value })
+  }).then(() => {
+    msg.classList.add('show');
+    input.value = '';
+    btn.textContent = 'Joined!';
+  }).catch(() => {
+    msg.textContent = 'Something went wrong, please try again.';
+    msg.style.color = '#f87171';
+    msg.classList.add('show');
+    btn.textContent = 'Join Waitlist';
+    btn.disabled = false;
+  });
   setTimeout(() => msg.classList.remove('show'), 5000);
 }
 </script>
