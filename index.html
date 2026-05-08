@@ -625,10 +625,11 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
   <div class="container">
     <h2>Ready to ditch headless Chrome?</h2>
     <p class="section-desc center" style="margin:0 auto 12px">Get early access to DocForge. 50 free PDFs per month, no credit card required.</p>
-    <form class="email-form" id="waitlist-form">
+    <form class="email-form" action="https://submit-form.com/6JgR4NH7e" method="POST" target="hidden-iframe">
       <input type="email" name="email" id="email-input" placeholder="you@company.com" required>
       <button type="submit" class="btn btn-primary">Join Waitlist</button>
     </form>
+    <iframe name="hidden-iframe" style="display:none"></iframe>
     <div class="email-msg" id="email-msg">✓ You're on the list! We'll be in touch soon.</div>
   </div>
 </section>
@@ -663,34 +664,12 @@ function toggleFaq(el) {
   if (!wasOpen) item.classList.add('open');
 }
 
-  document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
+  document.querySelector('.email-form').addEventListener('submit', function() {
     const msg = document.getElementById('email-msg');
     const input = document.getElementById('email-input');
-    const btn = this.querySelector('button');
-    const email = input.value.trim();
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-    try {
-      const res = await fetch('https://submit-form.com/6JgR4NH7e', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ email: email })
-      });
-      const data = await res.json();
-      console.log('Formspark response:', res.status, data);
-      msg.classList.add('show');
-      input.value = '';
-      btn.textContent = 'Joined!';
-    } catch(err) {
-      console.error('Formspark error:', err);
-      msg.textContent = 'Something went wrong: ' + err.message;
-      msg.style.color = '#f87171';
-      msg.classList.add('show');
-      btn.textContent = 'Join Waitlist';
-      btn.disabled = false;
-    }
-    setTimeout(() => { msg.classList.remove('show'); msg.style.color = ''; }, 5000);
+    msg.classList.add('show');
+    input.value = '';
+    setTimeout(() => msg.classList.remove('show'), 5000);
   });
 </script>
 </body>
