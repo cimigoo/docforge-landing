@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DocForge — JSON + Template → PDF API</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;--bg4:#22222e;
+  --border:#2a2a3a;--border-light:#3a3a4e;
+  --text:#e4e4ed;--text2:#a0a0b8;--text3:#6e6e88;
+  --accent:#7c5cfc;--accent2:#6a4cf0;--accent-glow:rgba(124,92,252,0.25);
+  --green:#34d399;--red:#f87171;
+  --radius:12px;--radius-sm:8px;--radius-lg:16px;
+  --mono:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+::selection{background:var(--accent);color:#fff}
+
+/* ── Layout ── */
+.container{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* ── Nav ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .container{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:700;font-size:1.15rem;letter-spacing:-.02em;color:#fff;display:flex;align-items:center;gap:8px}
+.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--text2);font-size:.875rem;transition:color .15s}
+.nav-links a:hover{color:#fff;text-decoration:none}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:var(--radius-sm);font-size:.875rem;font-weight:500;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 0 0 1px var(--accent),0 4px 16px var(--accent-glow)}
+.btn-primary:hover{background:var(--accent2);box-shadow:0 0 0 1px var(--accent2),0 6px 24px var(--accent-glow);text-decoration:none}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--border-light);background:var(--bg3);text-decoration:none}
+.btn-lg{padding:12px 28px;font-size:1rem;border-radius:var(--radius)}
+
+/* ── Hero ── */
+.hero{padding:100px 0 80px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse at center,rgba(124,92,252,.12) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:.8rem;background:var(--bg3);border:1px solid var(--border);color:var(--text2);margin-bottom:28px}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(2.5rem,5.5vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:20px;background:linear-gradient(180deg,#fff 0%,#c0b0ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.2rem;color:var(--text2);max-width:560px;margin:0 auto 36px;line-height:1.65}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:56px}
+
+/* ── Code Block ── */
+.code-window{max-width:640px;margin:0 auto;text-align:left;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.4)}
+.code-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);font-size:.75rem;color:var(--text3)}
+.code-dot{width:10px;height:10px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-bar span{margin-left:8px}
+.code-body{padding:20px 24px;font-family:var(--mono);font-size:.82rem;line-height:1.75;overflow-x:auto;color:var(--text2)}
+.code-body .kw{color:#c792ea}.code-body .str{color:#c3e88d}.code-body .num{color:#f78c6c}.code-body .cm{color:#546e7a}
+.code-body .fn{color:#82aaff}.code-body .op{color:#89ddff}.code-body .prop{color:#ffcb6b}
+
+/* ── Section ── */
+section{padding:100px 0}
+section .section-label{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:600;margin-bottom:12px}
+section h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;letter-spacing:-.02em;margin-bottom:16px}
+section .section-desc{color:var(--text2);font-size:1.05rem;max-width:560px;line-height:1.7}
+section .section-desc.center{margin:0 auto}
+
+/* ── Features ── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:48px}
+.feature-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:32px 28px;transition:border-color .2s,transform .2s}
+.feature-card:hover{border-color:var(--border-light);transform:translateY(-2px)}
+.feature-icon{width:44px;height:44px;border-radius:var(--radius-sm);background:linear-gradient(135deg,rgba(124,92,252,.15),rgba(124,92,252,.05));display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:18px;border:1px solid rgba(124,92,252,.2)}
+.feature-card h3{font-size:1.1rem;font-weight:600;margin-bottom:8px}
+.feature-card p{color:var(--text2);font-size:.9rem;line-height:1.6}
+
+/* ── API Example ── */
+.api-example{margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:768px){.api-example{grid-template-columns:1fr}}
+.api-tab{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.api-tab-header{display:flex;gap:0;border-bottom:1px solid var(--border)}
+.api-tab-btn{flex:1;padding:12px;text-align:center;font-size:.8rem;font-weight:600;cursor:pointer;background:transparent;border:none;color:var(--text3);border-bottom:2px solid transparent;transition:all .15s}
+.api-tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(124,92,252,.05)}
+.api-tab-content{display:none;padding:20px 24px;font-family:var(--mono);font-size:.8rem;line-height:1.75;overflow-x:auto;color:var(--text2)}
+.api-tab-content.active{display:block}
+
+/* ── Templates ── */
+.templates-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px;margin-top:48px}
+.template-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .2s,transform .2s;cursor:pointer}
+.template-card:hover{border-color:var(--border-light);transform:translateY(-2px)}
+.template-preview{height:220px;padding:16px 14px;background:#fff;position:relative}
+.template-preview .tp-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.template-preview .tp-logo{width:32px;height:32px;border-radius:6px}
+.template-preview .tp-title{font-size:.6rem;font-weight:700;color:#333;letter-spacing:.08em;text-transform:uppercase}
+.template-preview .tp-line{height:4px;border-radius:2px;background:#e5e7eb;margin-bottom:5px}
+.template-preview .tp-line.short{width:45%}.tp-line.medium{width:70%}.tp-line.long{width:90%}
+.template-preview .tp-line.accent{background:#7c5cfc}
+.template-preview .tp-box{border:1px solid #e5e7eb;border-radius:4px;padding:6px 8px;margin-bottom:8px}
+.template-preview .tp-table{width:100%;border-collapse:collapse;font-size:.45rem;margin-bottom:8px}
+.template-preview .tp-table td{border:1px solid #e5e7eb;padding:3px 5px;color:#555}
+.template-preview .tp-table th{background:#f9fafb;padding:3px 5px;font-weight:600;color:#333;text-align:left}
+.template-label{padding:14px 16px;font-size:.85rem;font-weight:600;text-align:center}
+.template-label span{display:block;font-size:.75rem;color:var(--text3);font-weight:400;margin-top:2px}
+
+/* ── Pricing ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:48px}
+.pricing-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px 32px;position:relative;transition:border-color .2s}
+.pricing-card.featured{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 8px 40px var(--accent-glow)}
+.pricing-card.featured::before{content:'Most Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 16px;border-radius:20px;background:var(--accent);color:#fff;font-size:.7rem;font-weight:600;letter-spacing:.03em}
+.pricing-name{font-size:1rem;font-weight:600;margin-bottom:6px}
+.pricing-price{font-size:2.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
+.pricing-price span{font-size:1rem;font-weight:400;color:var(--text3)}
+.pricing-desc{color:var(--text2);font-size:.85rem;margin-bottom:28px}
+.pricing-features{list-style:none;margin-bottom:32px}
+.pricing-features li{padding:8px 0;font-size:.9rem;color:var(--text2);display:flex;align-items:center;gap:10px}
+.pricing-features li::before{content:'✓';color:var(--green);font-weight:700;font-size:.85rem;flex-shrink:0}
+.pricing-features li.disabled{color:var(--text3)}
+.pricing-features li.disabled::before{content:'—';color:var(--text3)}
+.pricing-card .btn{width:100%;justify-content:center}
+
+/* ── Comparison ── */
+.comparison-table-wrap{overflow-x:auto;margin-top:48px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2)}
+.comparison-table{width:100%;border-collapse:collapse;font-size:.875rem}
+.comparison-table th,.comparison-table td{padding:16px 20px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+.comparison-table th{background:var(--bg3);font-weight:600;color:var(--text2);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em}
+.comparison-table th:first-child{color:var(--text3)}
+.comparison-table td:first-child{color:var(--text2);font-weight:500}
+.comparison-table tr:last-child td{border-bottom:none}
+.comparison-table .col-highlight{background:rgba(124,92,252,.04);color:#fff;font-weight:600}
+.comparison-table .check{color:var(--green);font-size:1.1rem}
+.comparison-table .cross{color:var(--red);font-size:1.1rem}
+
+/* ── FAQ ── */
+.faq-list{max-width:720px;margin:48px auto 0;display:flex;flex-direction:column;gap:2px}
+.faq-item{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);overflow:hidden}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;cursor:pointer;font-weight:600;font-size:.95rem;transition:color .15s;user-select:none}
+.faq-q:hover{color:var(--accent)}
+.faq-q .arrow{transition:transform .25s;color:var(--text3);font-size:.75rem}
+.faq-item.open .faq-q .arrow{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 22px 18px;color:var(--text2);font-size:.9rem;line-height:1.7}
+.faq-item.open .faq-a{display:block}
+
+/* ── Email CTA ── */
+.email-section{padding:80px 0;text-align:center;position:relative}
+.email-section::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse at center,rgba(124,92,252,.1) 0%,transparent 70%);pointer-events:none}
+.email-form{display:flex;gap:10px;max-width:440px;margin:28px auto 0;flex-wrap:wrap;justify-content:center}
+.email-form input{flex:1;min-width:220px;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:.9rem;outline:none;transition:border-color .2s}
+.email-form input:focus{border-color:var(--accent)}
+.email-form input::placeholder{color:var(--text3)}
+.email-msg{display:none;margin-top:12px;font-size:.85rem;color:var(--green)}
+.email-msg.show{display:block}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--border);padding:40px 0}
+footer .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer .copy{color:var(--text3);font-size:.8rem}
+footer .footer-links{display:flex;gap:24px}
+footer .footer-links a{color:var(--text3);font-size:.8rem}
+footer .footer-links a:hover{color:var(--text)}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .hero h1{font-size:2.2rem}
+  .hero p{font-size:1rem}
+  section{padding:64px 0}
+  .nav-links .hide-sm{display:none}
+  .api-example{grid-template-columns:1fr}
+  .pricing-grid,.templates-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:420px){
+  .pricing-grid,.templates-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ════ Nav ════ -->
+<nav>
+  <div class="container">
+    <a href="#" class="logo">⬡ <span>Doc</span>Forge</a>
+    <div class="nav-links">
+      <a href="#features" class="hide-sm">Features</a>
+      <a href="#templates" class="hide-sm">Templates</a>
+      <a href="#pricing" class="hide-sm">Pricing</a>
+      <a href="#faq" class="hide-sm">FAQ</a>
+      <a href="#" class="btn btn-primary">Get API Key</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ Hero ════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge"><span class="dot"></span> No Chrome · No Puppeteer · Just PDF</div>
+    <h1>JSON + Template → PDF<br>in 3 seconds</h1>
+    <p>POST your data to our API, get a pixel-perfect PDF back. Invoices, receipts, certificates, reports — ready-made templates, zero layout bugs.</p>
+    <div class="hero-ctas">
+      <a href="#" class="btn btn-primary btn-lg">Get Started Free</a>
+      <a href="#api-example" class="btn btn-ghost btn-lg">See the Code →</a>
+    </div>
+    <div class="code-window">
+      <div class="code-bar">
+        <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+        <span>Generate an invoice with one POST</span>
+      </div>
+      <div class="code-body">
+<span class="kw">curl</span> -X POST https://api.docforge.dev/v1/generate \<br>
+&nbsp;&nbsp;-H <span class="str">"Authorization: Bearer df_sk_..."</span> \<br>
+&nbsp;&nbsp;-H <span class="str">"Content-Type: application/json"</span> \<br>
+&nbsp;&nbsp;-d <span class="str">'{</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"template"</span>: <span class="str">"invoice"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"data"</span>: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"client"</span>: <span class="str">"Acme Corp"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"amount"</span>: <span class="num">4999</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"items"</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="str">"desc"</span>: <span class="str">"Pro Plan"</span>, <span class="str">"qty"</span>: <span class="num">1</span>, <span class="str">"price"</span>: <span class="num">4999</span> }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="str">}'</span> <span class="cm"># → returns PDF bytes (200 OK)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ Features ════ -->
+<section id="features">
+  <div class="container">
+    <div class="section-label">Why DocForge</div>
+    <h2>Built for developers who ship</h2>
+    <p class="section-desc">Other PDF APIs spin up Chrome. We don't. Templates are fixed, rendering is deterministic, and your PDFs will look the same on the 1st request and the 100,000th.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>No Chrome, Ever</h3>
+        <p>Built on PDFKit, not Puppeteer. No headless browser, no memory leaks, no frozen instances. Pure Node.js — fast and stable.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📐</div>
+        <h3>Templates That Don't Break</h3>
+        <p>Pre-built, battle-tested templates for invoices, receipts, certificates, reports and contracts. Your layout will never shift.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>3-Second PDFs</h3>
+        <p>Median response time under 3 seconds. No cold starts, no queues. Your users get their PDF instantly.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔧</div>
+        <h3>Simple REST API</h3>
+        <p>One endpoint. POST JSON, get PDF. No SDKs to install, no complex auth flows. Works with any language or framework.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ API Example ════ -->
+<section id="api-example" style="background:var(--bg2)">
+  <div class="container">
+    <div class="section-label">Integration</div>
+    <h2>Two languages, one API call</h2>
+    <p class="section-desc">Copy-paste ready. Generate a receipt in under 10 lines of code.</p>
+    <div class="api-example">
+      <div class="api-tab">
+        <div class="api-tab-header">
+          <button class="api-tab-btn active" onclick="switchTab(this,'curl')">cURL</button>
+          <button class="api-tab-btn" onclick="switchTab(this,'js')">JavaScript</button>
+        </div>
+        <pre class="api-tab-content active" id="tab-curl"><span class="kw">curl</span> -X POST https://api.docforge.dev/v1/generate \
+  -H <span class="str">"Authorization: Bearer df_sk_your_key"</span> \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{
+    "template": "receipt",
+    "data": {
+      "order_id": "ORD-20248",
+      "date": "2025-07-11",
+      "customer": "Jane Smith",
+      "items": [
+        { "name": "Widget A", "qty": 2, "price": 2500 },
+        { "name": "Widget B", "qty": 1, "price": 1200 }
+      ],
+      "total": 6200,
+      "currency": "USD"
+    }
+  }'</span></pre>
+        <pre class="api-tab-content" id="tab-js"><span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(
+  <span class="str">"https://api.docforge.dev/v1/generate"</span>,
+  {
+    method: <span class="str">"POST"</span>,
+    headers: {
+      <span class="str">"Authorization"</span>: <span class="str">"Bearer df_sk_your_key"</span>,
+      <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>,
+    },
+    body: JSON.<span class="fn">stringify</span>({
+      template: <span class="str">"receipt"</span>,
+      data: {
+        order_id: <span class="str">"ORD-20248"</span>,
+        customer: <span class="str">"Jane Smith"</span>,
+        items: [
+          { name: <span class="str">"Widget A"</span>, qty: <span class="num">2</span>, price: <span class="num">2500</span> },
+          { name: <span class="str">"Widget B"</span>, qty: <span class="num">1</span>, price: <span class="num">1200</span> },
+        ],
+        total: <span class="num">6200</span>,
+        currency: <span class="str">"USD"</span>,
+      },
+    }),
+  }
+);
+
+<span class="cm">// response.body is a PDF stream</span>
+<span class="kw">const</span> pdfBuffer = <span class="kw">await</span> response.<span class="fn">arrayBuffer</span>();</pre>
+      </div>
+      <div class="api-tab">
+        <div class="api-tab-header">
+          <button class="api-tab-btn active" onclick="switchTab(this,'py')">Python</button>
+          <button class="api-tab-btn" onclick="switchTab(this,'rb')">Ruby</button>
+        </div>
+        <pre class="api-tab-content active" id="tab-py"><span class="kw">import</span> requests
+
+resp = requests.<span class="fn">post</span>(
+    <span class="str">"https://api.docforge.dev/v1/generate"</span>,
+    headers={
+        <span class="str">"Authorization"</span>: <span class="str">"Bearer df_sk_your_key"</span>,
+        <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span>,
+    },
+    json={
+        <span class="str">"template"</span>: <span class="str">"receipt"</span>,
+        <span class="str">"data"</span>: {
+            <span class="str">"order_id"</span>: <span class="str">"ORD-20248"</span>,
+            <span class="str">"customer"</span>: <span class="str">"Jane Smith"</span>,
+            <span class="str">"items"</span>: [
+                {<span class="str">"name"</span>: <span class="str">"Widget A"</span>, <span class="str">"qty"</span>: <span class="num">2</span>, <span class="str">"price"</span>: <span class="num">2500</span>},
+                {<span class="str">"name"</span>: <span class="str">"Widget B"</span>, <span class="str">"qty"</span>: <span class="num">1</span>, <span class="str">"price"</span>: <span class="num">1200</span>},
+            ],
+            <span class="str">"total"</span>: <span class="num">6200</span>,
+            <span class="str">"currency"</span>: <span class="str">"USD"</span>,
+        },
+    },
+)
+
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"receipt.pdf"</span>, <span class="str">"wb"</span>) <span class="kw">as</span> f:
+    f.<span class="fn">write</span>(resp.content)</pre>
+        <pre class="api-tab-content" id="tab-rb"><span class="kw">require</span> <span class="str">'net/http'</span>
+<span class="kw">require</span> <span class="str">'json'</span>
+
+uri = URI(<span class="str">'https://api.docforge.dev/v1/generate'</span>)
+http = Net::HTTP.<span class="fn">new</span>(uri.host, uri.port)
+http.use_ssl = <span class="kw">true</span>
+
+request = Net::HTTP::Post.<span class="fn">new</span>(uri, {
+  <span class="str">'Authorization'</span> => <span class="str">'Bearer df_sk_your_key'</span>,
+  <span class="str">'Content-Type'</span> => <span class="str">'application/json'</span>,
+})
+request.body = {
+  template: <span class="str">'receipt'</span>,
+  data: {
+    order_id: <span class="str">'ORD-20248'</span>,
+    customer: <span class="str">'Jane Smith'</span>,
+    items: [
+      { name: <span class="str">'Widget A'</span>, qty: <span class="num">2</span>, price: <span class="num">2500</span> },
+      { name: <span class="str">'Widget B'</span>, qty: <span class="num">1</span>, price: <span class="num">1200</span> },
+    ],
+    total: <span class="num">6200</span>,
+    currency: <span class="str">'USD'</span>,
+  },
+}.<span class="fn">to_json</span>
+
+resp = http.<span class="fn">request</span>(request)
+File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.body)</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ Templates ════ -->
+<section id="templates">
+  <div class="container">
+    <div class="section-label">Templates</div>
+    <h2>5 production-ready templates</h2>
+    <p class="section-desc">No designing from scratch. Pick a template, send your data, done. More templates added monthly.</p>
+    <div class="templates-grid">
+      <!-- Invoice -->
+      <div class="template-card">
+        <div class="template-preview" style="font-family:var(--sans)">
+          <div class="tp-header">
+            <div><div class="tp-title">Invoice</div><div style="font-size:.5rem;color:#7c5cfc;font-weight:700;margin-top:2px">DOC FORGE</div></div>
+            <div style="text-align:right;font-size:.45rem;color:#888">INV-001<br>2025-07-11</div>
+          </div>
+          <div class="tp-line short"></div>
+          <table class="tp-table">
+            <tr><th>Item</th><th>Qty</th><th>Price</th></tr>
+            <tr><td>Pro Plan</td><td>1</td><td>$49.99</td></tr>
+            <tr><td>Support</td><td>1</td><td>$19.00</td></tr>
+          </table>
+          <div style="text-align:right;font-size:.5rem;font-weight:700;color:#333">Total: $68.99</div>
+        </div>
+        <div class="template-label">Invoice <span>Billing & payments</span></div>
+      </div>
+      <!-- Receipt -->
+      <div class="template-card">
+        <div class="template-preview" style="font-family:var(--sans)">
+          <div style="text-align:center;margin-bottom:10px">
+            <div style="font-size:.55rem;font-weight:700;color:#333">RECEIPT</div>
+            <div style="font-size:.4rem;color:#888">Thank you for your purchase</div>
+          </div>
+          <div style="border-top:1px dashed #d1d5db;border-bottom:1px dashed #d1d5db;padding:8px 0;margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:.45rem;color:#555;margin-bottom:4px"><span>Widget A ×2</span><span>$50.00</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.45rem;color:#555;margin-bottom:4px"><span>Widget B ×1</span><span>$12.00</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.5rem;font-weight:700;color:#333"><span>TOTAL</span><span>$62.00</span></div>
+        </div>
+        <div class="template-label">Receipt <span>Point of sale</span></div>
+      </div>
+      <!-- Certificate -->
+      <div class="template-card">
+        <div class="template-preview" style="font-family:var(--sans)">
+          <div style="text-align:center;padding-top:20px">
+            <div style="font-size:.35rem;letter-spacing:.15em;color:#888;text-transform:uppercase;margin-bottom:10px">Certificate of Completion</div>
+            <div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,#7c5cfc,transparent);margin:0 auto 10px"></div>
+            <div style="font-size:.7rem;font-weight:700;color:#333;margin-bottom:4px">Jane Smith</div>
+            <div style="font-size:.35rem;color:#888;margin-bottom:10px">has successfully completed</div>
+            <div style="font-size:.45rem;font-weight:600;color:#7c5cfc">Advanced React Patterns</div>
+            <div style="font-size:.35rem;color:#aaa;margin-top:12px">July 11, 2025</div>
+          </div>
+        </div>
+        <div class="template-label">Certificate <span>Courses & awards</span></div>
+      </div>
+      <!-- Report -->
+      <div class="template-card">
+        <div class="template-preview" style="font-family:var(--sans)">
+          <div class="tp-header">
+            <div><div class="tp-title">Monthly Report</div><div style="font-size:.4rem;color:#888;margin-top:2px">June 2025</div></div>
+          </div>
+          <div class="tp-line short accent"></div>
+          <div class="tp-box">
+            <div style="font-size:.4rem;color:#888;margin-bottom:3px">Revenue</div>
+            <div style="font-size:.6rem;font-weight:700;color:#333">$42,500</div>
+          </div>
+          <div style="display:flex;gap:4px">
+            <div class="tp-box" style="flex:1"><div style="font-size:.35rem;color:#888">Users</div><div style="font-size:.5rem;font-weight:700;color:#333">1,240</div></div>
+            <div class="tp-box" style="flex:1"><div style="font-size:.35rem;color:#888">Growth</div><div style="font-size:.5rem;font-weight:700;color:#34d399">+12%</div></div>
+          </div>
+        </div>
+        <div class="template-label">Report <span>Analytics & data</span></div>
+      </div>
+      <!-- Contract -->
+      <div class="template-card">
+        <div class="template-preview" style="font-family:var(--sans)">
+          <div style="text-align:center;margin-bottom:10px">
+            <div style="font-size:.55rem;font-weight:700;color:#333">Service Agreement</div>
+          </div>
+          <div class="tp-line long"></div>
+          <div class="tp-line long"></div>
+          <div class="tp-line medium"></div>
+          <div class="tp-line long"></div>
+          <div class="tp-line short"></div>
+          <div style="margin-top:14px;display:flex;gap:16px">
+            <div><div style="font-size:.35rem;color:#888;margin-bottom:4px">Signature</div><div style="width:60px;height:1px;background:#333"></div></div>
+            <div><div style="font-size:.35rem;color:#888;margin-bottom:4px">Date</div><div style="font-size:.4rem;color:#333">___/___/____</div></div>
+          </div>
+        </div>
+        <div class="template-label">Contract <span>Legal & agreements</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ Pricing ════ -->
+<section id="pricing" style="background:var(--bg2)">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label">Pricing</div>
+      <h2>Simple, transparent pricing</h2>
+      <p class="section-desc center">Start free. Scale when you're ready. No hidden fees, no surprises.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-name">Free</div>
+        <div class="pricing-price">$0 <span>/ month</span></div>
+        <div class="pricing-desc">Perfect for side projects and prototyping.</div>
+        <ul class="pricing-features">
+          <li>50 PDFs / month</li>
+          <li>All 5 templates</li>
+          <li>REST API access</li>
+          <li>Community support</li>
+          <li class="disabled">Custom branding</li>
+          <li class="disabled">Priority support</li>
+        </ul>
+        <a href="#" class="btn btn-ghost">Get Started Free</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-name">Pro</div>
+        <div class="pricing-price">$19 <span>/ month</span></div>
+        <div class="pricing-desc">For SaaS products and growing teams.</div>
+        <ul class="pricing-features">
+          <li>500 PDFs / month</li>
+          <li>All 5 templates</li>
+          <li>REST API access</li>
+          <li>Email support (24h)</li>
+          <li>Custom branding</li>
+          <li class="disabled">Priority support</li>
+        </ul>
+        <a href="#" class="btn btn-primary">Start Pro Trial</a>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Scale</div>
+        <div class="pricing-price">$49 <span>/ month</span></div>
+        <div class="pricing-desc">For high-volume production workloads.</div>
+        <ul class="pricing-features">
+          <li>5,000 PDFs / month</li>
+          <li>All 5 templates</li>
+          <li>REST API access</li>
+          <li>Priority support (4h)</li>
+          <li>Custom branding</li>
+          <li>Webhook callbacks</li>
+        </ul>
+        <a href="#" class="btn btn-ghost">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ Comparison ════ -->
+<section id="comparison">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label">Compare</div>
+      <h2>Why developers switch to DocForge</h2>
+      <p class="section-desc center">We're the only PDF API that doesn't spin up a browser. That means faster responses, lower costs, and zero layout surprises.</p>
+    </div>
+    <div class="comparison-table-wrap">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="col-highlight">DocForge</th>
+            <th>DocRaptor</th>
+            <th>PDFShift</th>
+            <th>API2PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Chrome-free rendering</td>
+            <td class="col-highlight"><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Built-in templates</td>
+            <td class="col-highlight">5+ included</td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Invoice templates</td>
+            <td class="col-highlight"><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+          <tr>
+            <td>Starting price</td>
+            <td class="col-highlight">$19/mo</td>
+            <td>$15/mo</td>
+            <td>$9/mo</td>
+            <td>Pay-per-use</td>
+          </tr>
+          <tr>
+            <td>99.9% uptime SLA</td>
+            <td class="col-highlight"><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Deterministic output</td>
+            <td class="col-highlight"><span class="check">✓</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+            <td><span class="cross">✗</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FAQ ════ -->
+<section id="faq" style="background:var(--bg2)">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label">FAQ</div>
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How is DocForge different from Puppeteer-based PDF APIs?<span class="arrow">▼</span></div>
+        <div class="faq-a">DocForge uses PDFKit (a pure Node.js PDF library) instead of headless Chrome. This means no browser processes to manage, no memory leaks, no CSS inconsistencies across renders, and much faster response times. Your template layout is deterministic — it will never shift or break.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What templates are available?<span class="arrow">▼</span></div>
+        <div class="faq-a">We currently offer 5 production-ready templates: Invoice, Receipt, Certificate, Monthly Report, and Service Contract. Each template supports custom colors, logos, and fonts. We add new templates monthly based on user requests.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I customize the templates with my brand?<span class="arrow">▼</span></div>
+        <div class="faq-a">Yes! On Pro and Scale plans, you can customize colors, upload your logo, and choose fonts. On the Free plan, templates use the default DocForge styling with a small "Generated by DocForge" watermark.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What happens if I exceed my monthly PDF limit?<span class="arrow">▼</span></div>
+        <div class="faq-a">We'll send you an email at 80% and 100% usage. After you hit the limit, additional requests return a 429 status. You can upgrade your plan at any time — the new limits take effect immediately. No overage charges, ever.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is my data secure?<span class="arrow">▼</span></div>
+        <div class="faq-a">Absolutely. All API traffic is encrypted via TLS 1.3. Your data is processed in memory and never written to disk. We don't store your PDFs or JSON payloads after the response is sent. SOC 2 compliance is on our 2025 roadmap.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ Email CTA ════ -->
+<section class="email-section">
+  <div class="container">
+    <h2>Ready to ditch headless Chrome?</h2>
+    <p class="section-desc center" style="margin:0 auto 12px">Get early access to DocForge. 50 free PDFs per month, no credit card required.</p>
+    <form class="email-form" onsubmit="handleEmail(event)">
+      <input type="email" id="email-input" placeholder="you@company.com" required>
+      <button type="submit" class="btn btn-primary">Join Waitlist</button>
+    </form>
+    <div class="email-msg" id="email-msg">✓ You're on the list! We'll be in touch soon.</div>
+  </div>
+</section>
+
+<!-- ════ Footer ════ -->
+<footer>
+  <div class="container">
+    <div class="copy">© 2025 DocForge. Built with ☕ and PDFKit.</div>
+    <div class="footer-links">
+      <a href="#">Docs</a>
+      <a href="#">Status</a>
+      <a href="#">GitHub</a>
+      <a href="#">Twitter</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function switchTab(btn, id) {
+  const parent = btn.closest('.api-tab');
+  parent.querySelectorAll('.api-tab-btn').forEach(b => b.classList.remove('active'));
+  parent.querySelectorAll('.api-tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+function handleEmail(e) {
+  e.preventDefault();
+  const msg = document.getElementById('email-msg');
+  const input = document.getElementById('email-input');
+  msg.classList.add('show');
+  input.value = '';
+  setTimeout(() => msg.classList.remove('show'), 5000);
+}
+</script>
+</body>
+</html>
