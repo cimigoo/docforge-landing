@@ -641,9 +641,10 @@ document.getElementById('waitlist-form').addEventListener('submit', async functi
   const email = input.value.trim();
   try {
     await fetch('https://script.google.com/macros/s/AKfycbya21JMCmHGEQ6XR4EG0ue_KrDzDlgrJ8Ep3C8Tg2mxu136g_KNbSHLAj2POY7g6A-I/exec', {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify({ email })
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'email=' + encodeURIComponent(email)
     });
     msg.classList.add('show');
     input.value = '';
