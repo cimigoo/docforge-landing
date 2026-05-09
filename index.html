@@ -625,11 +625,10 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
   <div class="container">
     <h2>Ready to ditch headless Chrome?</h2>
     <p class="section-desc center" style="margin:0 auto 12px">Get early access to DocForge. 50 free PDFs per month, no credit card required.</p>
-    <form class="email-form" action="https://formspree.io/f/mqenyklw" method="POST" target="hidden-iframe">
+    <form class="email-form" id="waitlist-form">
       <input type="email" name="email" id="email-input" placeholder="you@company.com" required>
       <button type="submit" class="btn btn-primary">Join Waitlist</button>
     </form>
-    <iframe name="hidden-iframe" style="display:none"></iframe>
     <div class="email-msg" id="email-msg">✓ You're on the list! We'll be in touch soon.</div>
   </div>
 </section>
@@ -664,13 +663,15 @@ function toggleFaq(el) {
   if (!wasOpen) item.classList.add('open');
 }
 
-  document.querySelector('.email-form').addEventListener('submit', function() {
+  document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
     const msg = document.getElementById('email-msg');
     const input = document.getElementById('email-input');
-    msg.classList.add('show');
-    input.value = '';
-    setTimeout(() => msg.classList.remove('show'), 5000);
-  });
-</script>
-</body>
-</html>
+    const email = input.value.trim();
+    try {
+      await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      msg.classL
