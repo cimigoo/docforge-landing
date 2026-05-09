@@ -669,9 +669,8 @@ function toggleFaq(el) {
     const input = document.getElementById('email-input');
     const email = input.value.trim();
     try {
-      await fetch('/api/waitlist', {
+      await fetch('https://script.google.com/macros/s/AKfycbya21JMCmHGEQ6XR4EG0ue_KrDzDlgrJ8Ep3C8Tg2mxu136g_KNbSHLAj2POY7g6A-I/exec', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
       });
       msg.classL
