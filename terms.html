@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — DocForge</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;--bg4:#22222e;
+      --border:#2a2a3a;--border-light:#3a3a4e;
+      --text:#e4e4ed;--text2:#a0a0b8;--text3:#6e6e88;
+      --accent:#7c5cfc;--accent2:#6a4cf0;
+      --radius:12px;
+      --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    }
+    html{scroll-behavior:smooth;font-size:16px}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    ::selection{background:var(--accent);color:#fff}
+    .container{max-width:800px;margin:0 auto;padding:0 24px}
+    
+    /* Nav */
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    nav .container{display:flex;align-items:center;justify-content:space-between;height:60px}
+    .logo{font-weight:700;font-size:1.15rem;letter-spacing:-.02em;color:#fff;display:flex;align-items:center;gap:8px}
+    .logo span{color:var(--accent)}
+    .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--text2);font-size:.875rem;transition:color .15s}
+    .back-link:hover{color:#fff;text-decoration:none}
+    
+    /* Content */
+    .legal-page{padding:60px 0 100px}
+    .legal-header{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+    .legal-header h1{font-size:2.2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+    .legal-header .meta{color:var(--text3);font-size:.875rem}
+    .legal-toc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;margin-bottom:48px}
+    .legal-toc h2{font-size:1rem;font-weight:600;margin-bottom:16px;color:var(--text2)}
+    .legal-toc ul{list-style:none}
+    .legal-toc li{margin-bottom:8px}
+    .legal-toc a{color:var(--text2);font-size:.9rem}
+    .legal-toc a:hover{color:var(--accent)}
+    .legal-toc a::before{content:"§ ";color:var(--accent)}
+    
+    .legal-content h2{font-size:1.4rem;font-weight:700;margin:48px 0 20px;padding-top:24px;border-top:1px solid var(--border)}
+    .legal-content h2:first-of-type{margin-top:0;padding-top:0;border-top:none}
+    .legal-content h3{font-size:1.1rem;font-weight:600;margin:24px 0 12px;color:var(--text)}
+    .legal-content p{margin-bottom:16px;color:var(--text2);line-height:1.75}
+    .legal-content ul,.legal-content ol{margin:0 0 20px 24px;color:var(--text2);line-height:1.75}
+    .legal-content li{margin-bottom:8px}
+    .legal-content strong{color:var(--text);font-weight:600}
+    .legal-content .highlight{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 20px;margin:24px 0;font-size:.9rem}
+    
+    /* Footer */
+    footer{background:var(--bg2);border-top:1px solid var(--border);padding:32px 0}
+    footer .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+    .copy{color:var(--text3);font-size:.875rem}
+    .footer-links{display:flex;gap:24px}
+    .footer-links a{color:var(--text3);font-size:.875rem;transition:color .15s}
+    .footer-links a:hover{color:var(--text);text-decoration:none}
+    
+    @media(max-width:600px){
+      .legal-header h1{font-size:1.8rem}
+      footer .container{flex-direction:column;text-align:center}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <a href="index.html" class="logo"><span>⚡</span> DocForge</a>
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+  </nav>
+
+  <main class="legal-page">
+    <div class="container">
+      <div class="legal-header">
+        <h1>Terms of Service</h1>
+        <p class="meta">Last updated: January 15, 2025</p>
+      </div>
+      
+      <nav class="legal-toc">
+        <h2>Table of Contents</h2>
+        <ul>
+          <li><a href="#acceptance">§1 Acceptance of Terms</a></li>
+          <li><a href="#service">§2 Description of Service</a></li>
+          <li><a href="#account">§3 Account Registration</a></li>
+          <li><a href="#usage">§4 Acceptable Use & Restrictions</a></li>
+          <li><a href="#ip">§5 Intellectual Property</a></li>
+          <li><a href="#payment">§6 Payment & Billing</a></li>
+          <li><a href="#data">§7 Data & Privacy</a></li>
+          <li><a href="#disclaimer">§8 Disclaimers & Limitation of Liability</a></li>
+          <li><a href="#indemnification">§9 Indemnification</a></li>
+          <li><a href="#termination">§10 Termination</a></li>
+          <li><a href="#changes">§11 Modifications to Terms</a></li>
+          <li><a href="#law">§12 Governing Law</a></li>
+          <li><a href="#contact">§13 Contact Information</a></li>
+        </ul>
+      </nav>
+
+      <div class="legal-content">
+        <h2 id="acceptance">§1 Acceptance of Terms</h2>
+        <p>Welcome to DocForge. By accessing or using our PDF generation API service ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not access or use the Service. These Terms constitute a legally binding agreement between you ("User," "you," or "your") and DocForge ("DocForge," "we," "us," or "our").</p>
+        <p>By creating an account, subscribing to any paid plan, or using our API, you acknowledge that you have read, understood, and agree to be bound by these Terms and our <a href="privacy.html">Privacy Policy</a>. If you are using the Service on behalf of a company or other legal entity, you represent that you have the authority to bind such entity to these Terms.</p>
+
+        <h2 id="service">§2 Description of Service</h2>
+        <p>DocForge provides a JSON-to-PDF API service that allows developers to generate PDF documents programmatically using predefined templates or custom designs. Our Service includes:</p>
+        <ul>
+          <li>RESTful API endpoints for PDF generation</li>
+          <li>Pre-built document templates (invoices, receipts, certificates, reports, contracts)</li>
+          <li>Custom branding options for paid plans</li>
+          <li>API key-based authentication</li>
+          <li>Usage analytics and monitoring</li>
+        </ul>
+        <p>We reserve the right to modify, suspend, or discontinue any aspect of the Service at any time, provided that we will give reasonable notice where practicable.</p>
+
+        <h2 id="account">§3 Account Registration</h2>
+        <p>To use DocForge, you must create an account and provide accurate, complete, and current information. You are responsible for:</p>
+        <ul>
+          <li>Maintaining the confidentiality of your account credentials and API keys</li>
+          <li>All activities that occur under your account</li>
+          <li>Notifying us immediately of any unauthorized use of your account</li>
+          <li>Ensuring your account information remains accurate and up-to-date</li>
+        </ul>
+        <p>You must be at least 18 years old (or the age of legal majority in your jurisdiction) to create an account. The Service is not available to anyone previously removed from the Service for violations of these Terms.</p>
+
+        <h2 id="usage">§4 Acceptable Use & Restrictions</h2>
+        <p>You agree to use the Service only for lawful purposes and in accordance with these Terms. You shall NOT:</p>
+        <ul>
+          <li>Use the Service to generate content that is unlawful, harmful, defamatory, obscene, or infringing on intellectual property rights</li>
+          <li>Attempt to gain unauthorized access to any systems, networks, or data</li>
+          <li>Interfere with or disrupt the integrity or performance of the Service</li>
+          <li>Use automated tools (bots, crawlers, scrapers) to access the Service without prior written consent</li>
+          <li>Resell, sublicense, or redistribute the Service without our express written permission</li>
+          <li>Use the Service in any manner that could damage, disable, overburden, or impair our infrastructure</li>
+          <li>Generate PDFs that impersonate official documents (government IDs, passports, licenses, etc.)</li>
+          <li>Violate any applicable local, state, national, or international laws or regulations</li>
+        </ul>
+        <div class="highlight">
+          <strong>API Rate Limits:</strong> Your usage is subject to the rate limits associated with your subscription plan. Exceeding your monthly PDF quota will result in a 429 status code until you upgrade or the next billing cycle.
+        </div>
+
+        <h2 id="ip">§5 Intellectual Property</h2>
+        <p><strong>DocForge IP:</strong> DocForge and its licensors retain all right, title, and interest in and to the Service, including all software, technology, documentation, templates, trademarks, logos, and other intellectual property. These Terms do not grant you any ownership rights.</p>
+        <p><strong>Your Content:</strong> You retain all rights to the data, documents, and content you submit through the API ("Your Content"). You grant DocForge a limited license to process Your Content solely for the purpose of providing the Service.</p>
+        <p><strong>Generated PDFs:</strong> PDFs generated through the Service using your JSON data and templates are your intellectual property. However, Free tier users acknowledge that generated PDFs may include a small "Generated by DocForge" watermark.</p>
+        <p><strong>Template Licensing:</strong> The pre-built templates provided by DocForge are licensed for use within the Service. You may not extract, copy, or reproduce these templates outside of the Service.</p>
+
+        <h2 id="payment">§6 Payment & Billing</h2>
+        <p><strong>Subscription Plans:</strong> DocForge offers the following subscription tiers:</p>
+        <ul>
+          <li><strong>Free:</strong> 100 PDFs per month, basic templates</li>
+          <li><strong>Pro:</strong> 1,000 PDFs per month, custom branding, priority support</li>
+          <li><strong>Business:</strong> Unlimited PDFs, custom branding, webhook callbacks</li>
+        </ul>
+        <p><strong>Billing:</strong> Paid subscriptions are billed monthly in advance. All fees are non-refundable except as required by law or at our sole discretion. Prices are subject to change with 30 days' notice.</p>
+        <p><strong>Payment Processing:</strong> Payments are processed by Paddle.com, our authorized payment processor. Paddle handles all payment-related inquiries, billing issues, and refunds. Your payment data is never stored on DocForge servers.</p>
+        <p><strong>Failed Payments:</strong> If a payment fails, we will notify you and attempt to process the payment again. After 14 days of failed payment, your account may be suspended until payment is received.</p>
+        <p><strong>Upgrades/Downgrades:</strong> You may upgrade your plan at any time, with the new rate taking effect immediately. Downgrades take effect at the start of the next billing cycle.</p>
+
+        <h2 id="data">§7 Data & Privacy</h2>
+        <p>Your privacy is important to us. Please review our <a href="privacy.html">Privacy Policy</a> for detailed information about how we collect, use, and protect your data. Key points include:</p>
+        <ul>
+          <li>We process your data only to provide the PDF generation Service</li>
+          <li>JSON payloads and generated PDFs are not persistently stored after the API response is delivered</li>
+          <li>We use Paddle as our payment processor and do not store payment information</li>
+          <li>You retain ownership of all data you submit through the Service</li>
+        </ul>
+
+        <h2 id="disclaimer">§8 Disclaimers & Limitation of Liability</h2>
+        <p><strong>AS IS:</strong> THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+        <p><strong>No Guarantee:</strong> We do not guarantee that the Service will be uninterrupted, error-free, or completely secure. We are not responsible for any third-party services or content.</p>
+        <p><strong>Liability Cap:</strong> TO THE MAXIMUM EXTENT PERMITTED BY LAW, DOCFORGE'S TOTAL LIABILITY FOR ANY CLAIMS ARISING OUT OF OR RELATING TO THESE TERMS OR THE SERVICE SHALL NOT EXCEED THE AMOUNT YOU PAID US IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM.</p>
+        <p><strong>Consequential Damages:</strong> IN NO EVENT SHALL DOCFORGE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES.</p>
+
+        <h2 id="indemnification">§9 Indemnification</h2>
+        <p>You agree to indemnify, defend, and hold harmless DocForge and its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising out of or in any way connected with:</p>
+        <ul>
+          <li>Your use of the Service</li>
+          <li>Your violation of these Terms</li>
+          <li>Your violation of any third-party rights</li>
+          <li>Any content you generate or distribute using the Service</li>
+        </ul>
+
+        <h2 id="termination">§10 Termination</h2>
+        <p><strong>By You:</strong> You may terminate your account at any time by accessing your account settings or contacting us at <a href="mailto:docforge.team@gmail.com">docforge.team@gmail.com</a>. Termination does not entitle you to a refund of any fees paid.</p>
+        <p><strong>By Us:</strong> We may terminate or suspend your account and access to the Service immediately, without prior notice, for any reason, including breach of these Terms, suspected fraud, or conduct harmful to other users or third parties.</p>
+        <p><strong>Effect of Termination:</strong> Upon termination, your right to use the Service ceases immediately. All provisions that should survive termination (Intellectual Property, Disclaimers, Limitation of Liability, Indemnification) will survive.</p>
+
+        <h2 id="changes">§11 Modifications to Terms</h2>
+        <p>We reserve the right to modify these Terms at any time. We will notify users of material changes via email or a prominent notice on our website at least 30 days before the changes take effect. Your continued use of the Service after such modifications constitutes acceptance of the updated Terms. If you do not agree to the changes, you must stop using the Service.</p>
+
+        <h2 id="law">§12 Governing Law</h2>
+        <p>These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which DocForge operates, without regard to its conflict of law provisions. Any disputes arising from these Terms or your use of the Service shall be resolved in the courts of that jurisdiction.</p>
+
+        <h2 id="contact">§13 Contact Information</h2>
+        <p>If you have any questions about these Terms of Service, please contact us:</p>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:docforge.team@gmail.com">docforge.team@gmail.com</a></li>
+          <li><strong>Website:</strong> <a href="index.html">https://docforge.io</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="copy">© 2025 DocForge. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:docforge.team@gmail.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
