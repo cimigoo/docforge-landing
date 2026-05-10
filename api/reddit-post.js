@@ -1,14 +1,15 @@
 /**
  * DocForge Reddit Poster (Web Login Approach)
  * POST /api/reddit-post
+ * 
  * No environment variables needed.
- * Credentials passed in request body, protected by DOCFORGE_API_KEY.
+ * Protected by requiring Reddit credentials in request body.
  */
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -19,12 +20,6 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const authHeader = req.headers['authorization'] || '';
-    const apiKey = authHeader.replace('Bearer ', '');
-    if (apiKey !== process.env.DOCFORGE_API_KEY) {
-      return res.status(401).json({ error: 'Invalid API key' });
-    }
-
     const { subreddit, title, text, kind = 'self', url, username, password } = req.body;
 
     if (!subreddit || !title || !username || !password) {
@@ -33,6 +28,7 @@ module.exports = async function handler(req, res) {
 
     const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36';
 
+    // Step 1: Get login page for CSRF token
     const loginPageRes = await fetch('https://www.reddit.com/login/', {
       headers: { 'User-Agent': UA },
       redirect: 'manual'
@@ -58,6 +54,7 @@ module.exports = async function handler(req, res) {
 
     collectCookies(loginPageRes);
 
+    // Step 2: Login
     const loginRes = await fetch('https://www.reddit.com/login/', {
       method: 'POST',
       headers: {
@@ -83,6 +80,7 @@ module.exports = async function handler(req, res) {
       return res.status(401).json({ error: 'Reddit login failed', status: loginRes.status });
     }
 
+    // Follow redirect to confirm session
     const redirectUrl = loginRes.headers.get('location');
     if (redirectUrl) {
       const confirmRes = await fetch(redirectUrl, {
@@ -92,6 +90,7 @@ module.exports = async function handler(req, res) {
       collectCookies(confirmRes);
     }
 
+    // Step 3: Get submit page for access token
     const submitPageRes = await fetch(`https://www.reddit.com/r/${subreddit}/submit`, {
       headers: { 'User-Agent': UA, 'Cookie': allCookies.join('; ') }
     });
@@ -99,6 +98,7 @@ module.exports = async function handler(req, res) {
     const submitPageBody = await submitPageRes.text();
     const accessTokenMatch = submitPageBody.match(/"accessToken"\s*:\s*"([^"]+)"/);
 
+    // Step 4: Submit the post
     if (accessTokenMatch) {
       const webAccessToken = accessTokenMatch[1];
       
@@ -128,6 +128,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ success: true, data: postData.json?.data || postData });
     }
 
+    // Fallback: direct form submission
     const directPostRes = await fetch('https://www.reddit.com/api/submit', {
       method: 'POST',
       headers: {
