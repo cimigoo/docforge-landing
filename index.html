@@ -22,8 +22,10 @@ a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 ::selection{background:var(--accent);color:#fff}
 
+/* ── Layout ── */
 .container{max-width:1120px;margin:0 auto;padding:0 24px}
 
+/* ── Nav ── */
 nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
 nav .container{display:flex;align-items:center;justify-content:space-between;height:60px}
 .logo{font-weight:700;font-size:1.15rem;letter-spacing:-.02em;color:#fff;display:flex;align-items:center;gap:8px}
@@ -38,6 +40,7 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .btn-ghost:hover{border-color:var(--border-light);background:var(--bg3);text-decoration:none}
 .btn-lg{padding:12px 28px;font-size:1rem;border-radius:var(--radius)}
 
+/* ── Hero ── */
 .hero{padding:100px 0 80px;text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse at center,rgba(124,92,252,.12) 0%,transparent 70%);pointer-events:none}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:.8rem;background:var(--bg3);border:1px solid var(--border);color:var(--text2);margin-bottom:28px}
@@ -47,6 +50,7 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .hero p{font-size:1.2rem;color:var(--text2);max-width:560px;margin:0 auto 36px;line-height:1.65}
 .hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:56px}
 
+/* ── Code Block ── */
 .code-window{max-width:640px;margin:0 auto;text-align:left;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.4)}
 .code-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);font-size:.75rem;color:var(--text3)}
 .code-dot{width:10px;height:10px;border-radius:50%}
@@ -56,12 +60,14 @@ nav .container{display:flex;align-items:center;justify-content:space-between;hei
 .code-body .kw{color:#c792ea}.code-body .str{color:#c3e88d}.code-body .num{color:#f78c6c}.code-body .cm{color:#546e7a}
 .code-body .fn{color:#82aaff}.code-body .op{color:#89ddff}.code-body .prop{color:#ffcb6b}
 
+/* ── Section ── */
 section{padding:100px 0}
 section .section-label{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:600;margin-bottom:12px}
 section h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;letter-spacing:-.02em;margin-bottom:16px}
 section .section-desc{color:var(--text2);font-size:1.05rem;max-width:560px;line-height:1.7}
 section .section-desc.center{margin:0 auto}
 
+/* ── Features ── */
 .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:48px}
 .feature-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:32px 28px;transition:border-color .2s,transform .2s}
 .feature-card:hover{border-color:var(--border-light);transform:translateY(-2px)}
@@ -69,6 +75,7 @@ section .section-desc.center{margin:0 auto}
 .feature-card h3{font-size:1.1rem;font-weight:600;margin-bottom:8px}
 .feature-card p{color:var(--text2);font-size:.9rem;line-height:1.6}
 
+/* ── API Example ── */
 .api-example{margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
 @media(max-width:768px){.api-example{grid-template-columns:1fr}}
 .api-tab{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
@@ -78,6 +85,7 @@ section .section-desc.center{margin:0 auto}
 .api-tab-content{display:none;padding:20px 24px;font-family:var(--mono);font-size:.8rem;line-height:1.75;overflow-x:auto;color:var(--text2)}
 .api-tab-content.active{display:block}
 
+/* ── Templates ── */
 .templates-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px;margin-top:48px}
 .template-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .2s,transform .2s;cursor:pointer}
 .template-card:hover{border-color:var(--border-light);transform:translateY(-2px)}
@@ -95,6 +103,7 @@ section .section-desc.center{margin:0 auto}
 .template-label{padding:14px 16px;font-size:.85rem;font-weight:600;text-align:center}
 .template-label span{display:block;font-size:.75rem;color:var(--text3);font-weight:400;margin-top:2px}
 
+/* ── Pricing ── */
 .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:48px}
 .pricing-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px 32px;position:relative;transition:border-color .2s}
 .pricing-card.featured{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 8px 40px var(--accent-glow)}
@@ -110,6 +119,7 @@ section .section-desc.center{margin:0 auto}
 .pricing-features li.disabled::before{content:'—';color:var(--text3)}
 .pricing-card .btn{width:100%;justify-content:center}
 
+/* ── Comparison ── */
 .comparison-table-wrap{overflow-x:auto;margin-top:48px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2)}
 .comparison-table{width:100%;border-collapse:collapse;font-size:.875rem}
 .comparison-table th,.comparison-table td{padding:16px 20px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
@@ -121,6 +131,7 @@ section .section-desc.center{margin:0 auto}
 .comparison-table .check{color:var(--green);font-size:1.1rem}
 .comparison-table .cross{color:var(--red);font-size:1.1rem}
 
+/* ── FAQ ── */
 .faq-list{max-width:720px;margin:48px auto 0;display:flex;flex-direction:column;gap:2px}
 .faq-item{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg2);overflow:hidden}
 .faq-q{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;cursor:pointer;font-weight:600;font-size:.95rem;transition:color .15s;user-select:none}
@@ -130,6 +141,7 @@ section .section-desc.center{margin:0 auto}
 .faq-a{display:none;padding:0 22px 18px;color:var(--text2);font-size:.9rem;line-height:1.7}
 .faq-item.open .faq-a{display:block}
 
+/* ── Email CTA ── */
 .email-section{padding:80px 0;text-align:center;position:relative}
 .email-section::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse at center,rgba(124,92,252,.1) 0%,transparent 70%);pointer-events:none}
 .email-form{display:flex;gap:10px;max-width:440px;margin:28px auto 0;flex-wrap:wrap;justify-content:center}
@@ -139,6 +151,7 @@ section .section-desc.center{margin:0 auto}
 .email-msg{display:none;margin-top:12px;font-size:.85rem;color:var(--green)}
 .email-msg.show{display:block}
 
+/* ── Footer ── */
 footer{border-top:1px solid var(--border);padding:40px 0}
 footer .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
 footer .copy{color:var(--text3);font-size:.8rem}
@@ -146,6 +159,7 @@ footer .footer-links{display:flex;gap:24px}
 footer .footer-links a{color:var(--text3);font-size:.8rem}
 footer .footer-links a:hover{color:var(--text)}
 
+/* ── Responsive ── */
 @media(max-width:640px){
   .hero h1{font-size:2.2rem}
   .hero p{font-size:1rem}
@@ -161,6 +175,7 @@ footer .footer-links a:hover{color:var(--text)}
 </head>
 <body>
 
+<!-- ════ Nav ════ -->
 <nav>
   <div class="container">
     <a href="#" class="logo">⬡ <span>Doc</span>Forge</a>
@@ -174,6 +189,7 @@ footer .footer-links a:hover{color:var(--text)}
   </div>
 </nav>
 
+<!-- ════ Hero ════ -->
 <section class="hero">
   <div class="container">
     <div class="hero-badge"><span class="dot"></span> No Chrome · No Puppeteer · Just PDF</div>
@@ -207,6 +223,7 @@ footer .footer-links a:hover{color:var(--text)}
   </div>
 </section>
 
+<!-- ════ Features ════ -->
 <section id="features">
   <div class="container">
     <div class="section-label">Why DocForge</div>
@@ -237,6 +254,7 @@ footer .footer-links a:hover{color:var(--text)}
   </div>
 </section>
 
+<!-- ════ API Example ════ -->
 <section id="api-example" style="background:var(--bg2)">
   <div class="container">
     <div class="section-label">Integration</div>
@@ -354,12 +372,14 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
   </div>
 </section>
 
+<!-- ════ Templates ════ -->
 <section id="templates">
   <div class="container">
     <div class="section-label">Templates</div>
     <h2>5 production-ready templates</h2>
     <p class="section-desc">No designing from scratch. Pick a template, send your data, done. More templates added monthly.</p>
     <div class="templates-grid">
+      <!-- Invoice -->
       <div class="template-card">
         <div class="template-preview" style="font-family:var(--sans)">
           <div class="tp-header">
@@ -376,6 +396,7 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
         </div>
         <div class="template-label">Invoice <span>Billing & payments</span></div>
       </div>
+      <!-- Receipt -->
       <div class="template-card">
         <div class="template-preview" style="font-family:var(--sans)">
           <div style="text-align:center;margin-bottom:10px">
@@ -390,6 +411,7 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
         </div>
         <div class="template-label">Receipt <span>Point of sale</span></div>
       </div>
+      <!-- Certificate -->
       <div class="template-card">
         <div class="template-preview" style="font-family:var(--sans)">
           <div style="text-align:center;padding-top:20px">
@@ -403,6 +425,7 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
         </div>
         <div class="template-label">Certificate <span>Courses & awards</span></div>
       </div>
+      <!-- Report -->
       <div class="template-card">
         <div class="template-preview" style="font-family:var(--sans)">
           <div class="tp-header">
@@ -420,6 +443,7 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
         </div>
         <div class="template-label">Report <span>Analytics & data</span></div>
       </div>
+      <!-- Contract -->
       <div class="template-card">
         <div class="template-preview" style="font-family:var(--sans)">
           <div style="text-align:center;margin-bottom:10px">
@@ -441,6 +465,7 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
   </div>
 </section>
 
+<!-- ════ Pricing ════ -->
 <section id="pricing" style="background:var(--bg2)">
   <div class="container">
     <div style="text-align:center">
@@ -454,47 +479,51 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
         <div class="pricing-price">$0 <span>/ month</span></div>
         <div class="pricing-desc">Perfect for side projects and prototyping.</div>
         <ul class="pricing-features">
-          <li>50 PDFs / month</li>
+          <li>100 PDFs / month</li>
           <li>All 5 templates</li>
           <li>REST API access</li>
           <li>Community support</li>
           <li class="disabled">Custom branding</li>
           <li class="disabled">Priority support</li>
         </ul>
-        <a href="#" class="btn btn-ghost">Get Started Free</a>
+        <a href="#" class="btn btn-ghost ls-buy" data-variant="REPLACE_WITH_FREE_VARIANT_ID">Get Started Free</a>
       </div>
       <div class="pricing-card featured">
         <div class="pricing-name">Pro</div>
-        <div class="pricing-price">$19 <span>/ month</span></div>
+        <div class="pricing-price">$9 <span>/ month</span></div>
         <div class="pricing-desc">For SaaS products and growing teams.</div>
         <ul class="pricing-features">
-          <li>500 PDFs / month</li>
+          <li>1,000 PDFs / month</li>
           <li>All 5 templates</li>
           <li>REST API access</li>
           <li>Email support (24h)</li>
           <li>Custom branding</li>
           <li class="disabled">Priority support</li>
         </ul>
-        <a href="#" class="btn btn-primary">Start Pro Trial</a>
+        <a href="#" class="btn btn-primary ls-buy" data-variant="REPLACE_WITH_PRO_VARIANT_ID">Start Pro</a>
       </div>
       <div class="pricing-card">
-        <div class="pricing-name">Scale</div>
-        <div class="pricing-price">$49 <span>/ month</span></div>
+        <div class="pricing-name">Business</div>
+        <div class="pricing-price">$29 <span>/ month</span></div>
         <div class="pricing-desc">For high-volume production workloads.</div>
         <ul class="pricing-features">
-          <li>5,000 PDFs / month</li>
+          <li>Unlimited PDFs / month</li>
           <li>All 5 templates</li>
           <li>REST API access</li>
           <li>Priority support (4h)</li>
           <li>Custom branding</li>
           <li>Webhook callbacks</li>
         </ul>
-        <a href="#" class="btn btn-ghost">Contact Sales</a>
+        <a href="#" class="btn btn-ghost ls-buy" data-variant="REPLACE_WITH_BUSINESS_VARIANT_ID">Start Business</a>
       </div>
     </div>
+    <p style="text-align:center;color:var(--text3);font-size:.8rem;margin-top:24px">
+      Need a custom plan? <a href="mailto:bwl@gpos.cn">Contact us</a>
+    </p>
   </div>
 </section>
 
+<!-- ════ Comparison ════ -->
 <section id="comparison">
   <div class="container">
     <div style="text-align:center">
@@ -562,6 +591,7 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
   </div>
 </section>
 
+<!-- ════ FAQ ════ -->
 <section id="faq" style="background:var(--bg2)">
   <div class="container">
     <div style="text-align:center">
@@ -593,6 +623,7 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
   </div>
 </section>
 
+<!-- ════ Email CTA ════ -->
 <section class="email-section">
   <div class="container">
     <h2>Ready to ditch headless Chrome?</h2>
@@ -605,6 +636,7 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
   </div>
 </section>
 
+<!-- ════ Footer ════ -->
 <footer>
   <div class="container">
     <div class="copy">© 2025 DocForge. Built with ☕ and PDFKit.</div>
@@ -634,27 +666,55 @@ function toggleFaq(el) {
   if (!wasOpen) item.classList.add('open');
 }
 
-document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const msg = document.getElementById('email-msg');
-  const input = document.getElementById('email-input');
-  const email = input.value.trim();
-  try {
-    await fetch('https://script.google.com/macros/s/AKfycbwKYCSOTHVmFzkwZYK5SVJ1MFyZ1KTgIhZGCmBLg5KMaS2fTN7iz0BoVS7GAZVtleib/exec', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'email=' + encodeURIComponent(email)
+  document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const msg = document.getElementById('email-msg');
+    const input = document.getElementById('email-input');
+    const email = input.value.trim();
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbwKYCSOTHVmFzkwZYK5SVJ1MFyZ1KTgIhZGCmBLg5KMaS2fTN7iz0BoVS7GAZVtleib/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'email=' + encodeURIComponent(email)
+      });
+      msg.classList.add('show');
+      input.value = '';
+    } catch(err) {
+      msg.textContent = 'Something went wrong, please try again.';
+      msg.style.color = '#f87171';
+      msg.classList.add('show');
+    }
+    setTimeout(() => { msg.classList.remove('show'); msg.style.color = ''; }, 5000);
+  });
+
+  // Lemon Squeezy overlay checkout
+  var script = document.createElement('script');
+  script.src = 'https://assets.lemonsqueezy.com/lemon.js';
+  script.defer = true;
+  document.head.appendChild(script);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.ls-buy').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var variantId = btn.getAttribute('data-variant');
+        if (!variantId || variantId.startsWith('REPLACE_')) {
+          alert('Checkout not configured yet. Please replace variant IDs in index.html.');
+          return;
+        }
+        if (window.CreateLemonSqueezy) {
+          window.CreateLemonSqueezy().then(function(LS) {
+            LS.init({ override: [variantId] });
+            LS.UrlBox().show({ selector: btn });
+          });
+        } else {
+          // Fallback: direct checkout URL
+          window.open('https://cimigo.lemonsqueezy.com/checkout/buy/' + variantId, '_blank');
+        }
+      });
     });
-    msg.classList.add('show');
-    input.value = '';
-  } catch(err) {
-    msg.textContent = 'Something went wrong, please try again.';
-    msg.style.color = '#f87171';
-    msg.classList.add('show');
-  }
-  setTimeout(() => { msg.classList.remove('show'); msg.style.color = ''; }, 5000);
-});
+  });
 </script>
 </body>
 </html>
