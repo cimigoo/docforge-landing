@@ -159,6 +159,18 @@ footer .footer-links{display:flex;gap:24px}
 footer .footer-links a{color:var(--text3);font-size:.8rem}
 footer .footer-links a:hover{color:var(--text)}
 
+/* ── PayPal Buttons ── */
+.paypal-btn-container {
+  min-height: 45px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.paypal-btn-container iframe {
+  max-width: 100% !important;
+}
+
 /* ── Responsive ── */
 @media(max-width:640px){
   .hero h1{font-size:2.2rem}
@@ -486,7 +498,9 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
           <li class="disabled">Custom branding</li>
           <li class="disabled">Priority support</li>
         </ul>
-        <a href="#" class="btn btn-ghost ls-buy" data-variant="REPLACE_WITH_FREE_VARIANT_ID">Get Started Free</a>
+        <!-- PayPal Buttons will be rendered here -->
+        <div id="paypal-button-container-free" class="paypal-btn-container" data-plan="free"></div>
+        <a href="#" class="btn btn-ghost pp-buy" data-plan="free">Get Started Free</a>
       </div>
       <div class="pricing-card featured">
         <div class="pricing-name">Pro</div>
@@ -500,7 +514,9 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
           <li>Custom branding</li>
           <li class="disabled">Priority support</li>
         </ul>
-        <a href="#" class="btn btn-primary ls-buy" data-variant="REPLACE_WITH_PRO_VARIANT_ID">Start Pro</a>
+        <!-- PayPal Buttons will be rendered here -->
+        <div id="paypal-button-container-pro" class="paypal-btn-container" data-plan="pro"></div>
+        <a href="#" class="btn btn-primary pp-buy" data-plan="pro">Start Pro</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-name">Business</div>
@@ -514,7 +530,9 @@ File.<span class="fn">write</span>(<span class="str">'receipt.pdf'</span>, resp.
           <li>Custom branding</li>
           <li>Webhook callbacks</li>
         </ul>
-        <a href="#" class="btn btn-ghost ls-buy" data-variant="REPLACE_WITH_BUSINESS_VARIANT_ID">Start Business</a>
+        <!-- PayPal Buttons will be rendered here -->
+        <div id="paypal-button-container-business" class="paypal-btn-container" data-plan="business"></div>
+        <a href="#" class="btn btn-ghost pp-buy" data-plan="business">Start Business</a>
       </div>
     </div>
     <p style="text-align:center;color:var(--text3);font-size:.8rem;margin-top:24px">
@@ -688,33 +706,15 @@ function toggleFaq(el) {
     setTimeout(() => { msg.classList.remove('show'); msg.style.color = ''; }, 5000);
   });
 
-  // Lemon Squeezy overlay checkout
-  var script = document.createElement('script');
-  script.src = 'https://assets.lemonsqueezy.com/lemon.js';
-  script.defer = true;
-  document.head.appendChild(script);
-
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.ls-buy').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        var variantId = btn.getAttribute('data-variant');
-        if (!variantId || variantId.startsWith('REPLACE_')) {
-          alert('Checkout not configured yet. Please replace variant IDs in index.html.');
-          return;
-        }
-        if (window.CreateLemonSqueezy) {
-          window.CreateLemonSqueezy().then(function(LS) {
-            LS.init({ override: [variantId] });
-            LS.UrlBox().show({ selector: btn });
-          });
-        } else {
-          // Fallback: direct checkout URL
-          window.open('https://cimigo.lemonsqueezy.com/checkout/buy/' + variantId, '_blank');
-        }
-      });
-    });
-  });
-</script>
-</body>
-</html>
+  // PayPal JS SDK Configuration
+  // TODO: Replace with your actual PayPal Client ID from https://developer.paypal.com/dashboard/applications
+  const PAYPAL_CLIENT_ID = 'YOUR_PAYPAL_CLIENT_ID'; // Replace with actual Client ID
+  
+  // Plan configuration (prices in USD)
+  const PLANS = {
+    free: {
+      planId: 'REPLACE_WITH_FREE_PLAN_ID', // Will be set after creating plans in PayPal Dashboard
+      price: '0',
+      quotas: '100'
+    },
+    p
