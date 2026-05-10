@@ -1,0 +1,12 @@
+{
+  "name": "docforge-api",
+  "version": "1.0.0",
+  "description": "JSON + Template → PDF API powered by PDFKit",
+  "main": "api/generate.js",
+  "dependencies": {
+    "pdfkit": "^0.13.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
